@@ -1,0 +1,17 @@
+service: todoApp
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: personal
+  region: eu-west-2
+  memorySize: 128
+
+
+package:
+  exclude:
+    - .git/**
+
+functions:
+  hello:
+    handler: handler.hello

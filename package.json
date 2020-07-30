@@ -1,0 +1,25 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "Todo App",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodeleaks/todos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nodeleaks/todos/issues"
+  },
+  "homepage": "https://github.com/nodeleaks/todos#readme",
+  "dependencies": {
+    "apollo-server-lambda": "^2.16.1",
+    "aws-sdk": "^2.723.0",
+    "sequelize": "^6.3.3",
+    "serverless-offline": "^6.5.0"
+  }
+}

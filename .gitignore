@@ -1,0 +1,16 @@
+# package directories
+node_modules
+
+# Serverless directories
+.serverless
+.vscode
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# MacOS files
+.DS_Store
+
+.env

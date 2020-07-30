@@ -1,18 +1,33 @@
-'use strict';
+require('dotenv').config();
+const { ApolloServer, makeExecutableSchema } = require('apollo-server-lambda');
+const resolvers = require('./src/resolvers');
+const typeDefs = require('./src/typeDefs');
 
-module.exports.hello = async event => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v1.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+  resolverValidationOptions: { requireResolversForResolveType: false },
+})
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+const server = new ApolloServer({
+  schema,
+  formatError: (err) => err,
+  context: async({ event, context }) => {
+    return {
+      functionName: context.functionName,
+      event,
+      context,
+    }
+  }
+  
+})
+
+module.exports.api = async (event, context) => {
+  const handler = server.createHandler({
+    cors: {
+      origin: '*',
+    }
+  })
+
+  return handler(event, context);
 };

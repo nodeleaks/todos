@@ -7,11 +7,19 @@ provider:
   region: eu-west-2
   memorySize: 128
 
+functions:
+  api:
+    handler: handler.api
+    events:
+      - http:
+          path: graphql
+          method: post
+          cors:
+            origin: '*'
+      - http: 
+          path: /
+          method: get
 
 package:
   exclude:
     - .git/**
-
-functions:
-  hello:
-    handler: handler.hello

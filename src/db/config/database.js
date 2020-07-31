@@ -1,17 +1,17 @@
 const Sequelize = require('sequelize')
-const _ = require('lodash');
+const _ = require('lodash')
 const path = require('path')
 
 const models = [
-  'task',
+  'task'
 ]
 
 class DB {
-  constructor(SequelizeClass) {
-    this.Sequelize = SequelizeClass;
+  constructor (SequelizeClass) {
+    this.Sequelize = SequelizeClass
   }
 
-  init() {
+  init () {
     if (this.sequelize) {
       return this.sequelize
     }
@@ -23,35 +23,35 @@ class DB {
         logging: false, // Disable the logging. It is consuming the time on lambda function.
         dialect: 'postgresql',
         dialectOptions: {
-          useUTC: false, // for reading from database
+          useUTC: false // for reading from database
         },
         // Use a different storage type. Default: sequelize
-        migrationStorage: "json",
+        migrationStorage: 'json',
 
         // Use a different file name. Default: sequelize-meta.json
-        migrationStoragePath: "sequelizeMeta.json",
+        migrationStoragePath: 'sequelizeMeta.json',
 
         // Use a different table name. Default: SequelizeMeta
-        migrationStorageTableName: "sequelize_meta",
-      });
+        migrationStorageTableName: 'sequelize_meta'
+      })
 
       models.forEach((modelName) => {
-        const model = require(path.join(__dirname, './../models/', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes);
+        const model = require(path.join(__dirname, './../models/', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes)
 
-        modelName = _.upperFirst(modelName);
-        this[modelName] = model;
-      });
+        modelName = _.upperFirst(modelName)
+        this[modelName] = model
+      })
       // this.sequelize.sync({force: false});
     } catch (e) {
-    console.log('db init error');
-    console.log({ e });
-  } 
+      console.log('db init error')
+      console.log({ e })
+    }
 
-    return undefined;
+    return undefined
   }
 
-  close() {
-    return this.sequelize.close();
+  close () {
+    return this.sequelize.close()
   }
 }
-module.exports = new DB(Sequelize);
+module.exports = new DB(Sequelize)

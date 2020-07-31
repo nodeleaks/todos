@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-lambda');
+const { gql } = require('apollo-server-lambda')
 
 const typeDef = gql`
   
@@ -7,8 +7,8 @@ const typeDef = gql`
     summary: String,
     description: String,
     status: StatusEnum
-    createdAt: String,
-    updatedAt: String
+    createdAt: DateTime,
+    updatedAt: DateTime
   }
 
   enum StatusEnum {
@@ -16,17 +16,26 @@ const typeDef = gql`
     done
   }
 
-  type Mutation {
+  extend type Mutation {
     createTask (
       summary: String!,
       description: String,
       status: StatusEnum
+    ): Task  
+
+    updateTask (
+      id: ID!,
+      status: StatusEnum!
     ): Task
+
+    deleteTask (
+      id: ID!
+    ): Boolean
   }
 
-  type Query {
-    tasks: [Task]
+  extend type Query {
+    tasks (limit: Int, offset: Int): [Task]
   }
   
 `
-module.exports = typeDef;
+module.exports = typeDef

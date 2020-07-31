@@ -1,4 +1,4 @@
-const constants = require('../../constants');
+const constants = require('../../constants')
 
 module.exports = (sequelize, type) => {
   const task = sequelize.define('Task', {
@@ -6,27 +6,27 @@ module.exports = (sequelize, type) => {
       type: type.UUID,
       defaultValue: type.UUIDV4,
       primaryKey: true,
-      allowNull: false,
+      allowNull: false
     },
     summary: {
       type: type.STRING(500),
-      allowNull: false,
+      allowNull: false
     },
     description: {
       type: type.STRING(500),
-      allowNull: true,
+      allowNull: true
     },
     status: {
       type: type.ENUM([
         constants.TASK.STATUS.TODO,
-        constants.TASK.STATUS.DONE,
+        constants.TASK.STATUS.DONE
       ]),
       allowNull: false,
-      defaultValue: constants.TASK.STATUS.TODO,
+      defaultValue: constants.TASK.STATUS.TODO
     },
     createdAt: type.DATE,
-    updatedAt: type.DATE,
-  });
+    updatedAt: type.DATE
+  })
 
-  return task;
-};
+  return task
+}

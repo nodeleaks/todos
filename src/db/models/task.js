@@ -22,6 +22,7 @@ module.exports = (sequelize, type) => {
         constants.TASK.STATUS.DONE,
       ]),
       allowNull: false,
+      defaultValue: constants.TASK.STATUS.TODO,
     },
     createdAt: type.DATE,
     updatedAt: type.DATE,

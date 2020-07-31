@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const _ = require('lodash');
 const path = require('path')
 
 const models = [
@@ -6,14 +7,13 @@ const models = [
 ]
 
 class DB {
-  constructor(Sequelize) {
-    this.Sequelize = Sequelize
+  constructor(SequelizeClass) {
+    this.Sequelize = SequelizeClass;
   }
 
   init() {
     if (this.sequelize) {
       return this.sequelize
-      
     }
 
     try {
@@ -25,17 +25,23 @@ class DB {
         dialectOptions: {
           useUTC: false, // for reading from database
         },
-        operatorsAliases,
-        // migrationStorageTableName: '_sequelize_meta'
+        // Use a different storage type. Default: sequelize
+        migrationStorage: "json",
+
+        // Use a different file name. Default: sequelize-meta.json
+        migrationStoragePath: "sequelizeMeta.json",
+
+        // Use a different table name. Default: SequelizeMeta
+        migrationStorageTableName: "sequelize_meta",
       });
 
       models.forEach((modelName) => {
-        const model = this.sequelize.import(path.join(__dirname, './../common/models/', `${modelName}.js`));
-        // let originalModelName = '' + modelName;
+        const model = require(path.join(__dirname, './../models/', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes);
 
         modelName = _.upperFirst(modelName);
         this[modelName] = model;
       });
+      // this.sequelize.sync({force: false});
     } catch (e) {
     console.log('db init error');
     console.log({ e });

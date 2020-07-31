@@ -6,6 +6,7 @@ provider:
   profile: personal
   region: eu-west-2
   memorySize: 128
+  versionFunctions: false # optional, default is true
 
 functions:
   api:
@@ -23,3 +24,6 @@ functions:
 package:
   exclude:
     - .git/**
+
+plugins:
+  - serverless-offline

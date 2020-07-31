@@ -43,7 +43,7 @@ const server = new ApolloServer({
 
 })
 
-module.exports.api = (event, context, callback) => {
+export const api = (event, context, callback) => {
   const handler = server.createHandler({
     cors: {
       origin: '*'

@@ -54,4 +54,4 @@ class DB {
     return this.sequelize.close()
   }
 }
-module.exports = new DB(Sequelize)
+export default new DB(Sequelize)

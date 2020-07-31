@@ -24,19 +24,11 @@ class DB {
         dialect: 'postgresql',
         dialectOptions: {
           useUTC: false // for reading from database
-        },
-        // Use a different storage type. Default: sequelize
-        migrationStorage: 'json',
-
-        // Use a different file name. Default: sequelize-meta.json
-        migrationStoragePath: 'sequelizeMeta.json',
-
-        // Use a different table name. Default: SequelizeMeta
-        migrationStorageTableName: 'sequelize_meta'
+        }
       })
 
       models.forEach((modelName) => {
-        const model = require(path.join(__dirname, './../models/', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes)
+        const model = require(path.resolve('src/db/models', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes)
 
         modelName = _.upperFirst(modelName)
         this[modelName] = model

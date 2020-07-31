@@ -1,8 +1,8 @@
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-lambda'
+import db from './src/db/config/database'
+import commonTypeDef from './src/commonTypeDef'
+import * as task from './src/entities/task'
 require('dotenv').config()
-const { ApolloServer, makeExecutableSchema } = require('apollo-server-lambda')
-const db = require('./src/db/config/database')
-const commonTypeDef = require('./src/commonTypeDef')
-const task = require('./src/entities/task')
 
 const schema = makeExecutableSchema({
   typeDefs: [

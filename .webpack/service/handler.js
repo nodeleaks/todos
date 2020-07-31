@@ -98,29 +98,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "api", function() { return api; });
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! apollo-server-lambda */ "apollo-server-lambda");
+/* harmony import */ var apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _src_db_config_database__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./src/db/config/database */ "./src/db/config/database.js");
+/* harmony import */ var _src_commonTypeDef__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./src/commonTypeDef */ "./src/commonTypeDef.js");
+/* harmony import */ var _src_entities_task__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./src/entities/task */ "./src/entities/task/index.js");
+
+
+
+
 
 
 __webpack_require__(/*! dotenv */ "dotenv").config();
 
-const {
-  ApolloServer,
-  makeExecutableSchema
-} = __webpack_require__(/*! apollo-server-lambda */ "apollo-server-lambda");
-
-const db = __webpack_require__(/*! ./src/db/config/database */ "./src/db/config/database.js");
-
-const commonTypeDef = __webpack_require__(/*! ./src/commonTypeDef */ "./src/commonTypeDef.js");
-
-const task = __webpack_require__(/*! ./src/entities/task */ "./src/entities/task/index.js");
-
-const schema = makeExecutableSchema({
-  typeDefs: [commonTypeDef, task.typeDef],
-  resolvers: [task.resolvers],
+const schema = Object(apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__["makeExecutableSchema"])({
+  typeDefs: [_src_commonTypeDef__WEBPACK_IMPORTED_MODULE_3__["default"], _src_entities_task__WEBPACK_IMPORTED_MODULE_4__["typeDef"]],
+  resolvers: [_src_entities_task__WEBPACK_IMPORTED_MODULE_4__["resolvers"]],
   resolverValidationOptions: {
     requireResolversForResolveType: false
   }
 });
-const server = new ApolloServer({
+const server = new apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__["ApolloServer"]({
   schema,
   formatError: err => {
     let newError = null;
@@ -138,13 +136,13 @@ const server = new ApolloServer({
     event,
     context
   }) => {
-    db.init();
+    _src_db_config_database__WEBPACK_IMPORTED_MODULE_2__["default"].init();
     return {
       headers: event.headers,
       functionName: context.functionName,
       event,
       context,
-      db
+      db: _src_db_config_database__WEBPACK_IMPORTED_MODULE_2__["default"]
     };
   }
 });
@@ -159,51 +157,16 @@ const api = (event, context, callback) => {
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/harmony-module.js":
-/*!*******************************************!*\
-  !*** (webpack)/buildin/harmony-module.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(originalModule) {
-	if (!originalModule.webpackPolyfill) {
-		var module = Object.create(originalModule);
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		Object.defineProperty(module, "exports", {
-			enumerable: true
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-
 /***/ "./src/commonTypeDef.js":
 /*!******************************!*\
   !*** ./src/commonTypeDef.js ***!
   \******************************/
-/*! no exports provided */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
 
 
@@ -222,8 +185,7 @@ scalar DateTime
     _empty: String
   }
 `;
-module.exports = commonTypeDef;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
+/* harmony default export */ __webpack_exports__["default"] = (commonTypeDef);
 
 /***/ }),
 
@@ -287,16 +249,10 @@ class DB {
         dialectOptions: {
           useUTC: false // for reading from database
 
-        },
-        // Use a different storage type. Default: sequelize
-        migrationStorage: 'json',
-        // Use a different file name. Default: sequelize-meta.json
-        migrationStoragePath: 'sequelizeMeta.json',
-        // Use a different table name. Default: SequelizeMeta
-        migrationStorageTableName: 'sequelize_meta'
+        }
       });
       models.forEach(modelName => {
-        const model = __webpack_require__("./src/db/config sync recursive")(path.join(__dirname, './../models/', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes);
+        const model = __webpack_require__("./src/db/config sync recursive")(path.resolve('src/db/models', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes);
 
         modelName = _.upperFirst(modelName);
         this[modelName] = model;
@@ -325,24 +281,22 @@ class DB {
 /*!************************************!*\
   !*** ./src/entities/task/index.js ***!
   \************************************/
-/*! no exports provided */
+/*! exports provided: resolvers, typeDef */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _resolvers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./resolvers */ "./src/entities/task/resolvers.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resolvers", function() { return _resolvers__WEBPACK_IMPORTED_MODULE_1__["resolvers"]; });
+
+/* harmony import */ var _typeDef__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./typeDef */ "./src/entities/task/typeDef.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "typeDef", function() { return _typeDef__WEBPACK_IMPORTED_MODULE_2__["typeDef"]; });
 
 
-const resolvers = __webpack_require__(/*! ./resolvers */ "./src/entities/task/resolvers.js");
 
-const typeDef = __webpack_require__(/*! ./typeDef */ "./src/entities/task/typeDef.js");
 
-module.exports = {
-  resolvers,
-  typeDef
-};
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
 
 /***/ }),
 
@@ -350,12 +304,13 @@ module.exports = {
 /*!****************************************!*\
   !*** ./src/entities/task/resolvers.js ***!
   \****************************************/
-/*! no exports provided */
+/*! exports provided: resolvers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolvers", function() { return resolvers; });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
 
 const resolvers = {
@@ -396,8 +351,6 @@ const resolvers = {
     }
   }
 };
-module.exports = resolvers;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
 
 /***/ }),
 
@@ -405,20 +358,19 @@ module.exports = resolvers;
 /*!**************************************!*\
   !*** ./src/entities/task/typeDef.js ***!
   \**************************************/
-/*! no exports provided */
+/*! exports provided: typeDef */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "typeDef", function() { return typeDef; });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! apollo-server-lambda */ "apollo-server-lambda");
+/* harmony import */ var apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__);
 
 
-const {
-  gql
-} = __webpack_require__(/*! apollo-server-lambda */ "apollo-server-lambda");
-
-const typeDef = gql`
+const typeDef = apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__["gql"]`
   
   type Task {
     id: ID,
@@ -456,8 +408,6 @@ const typeDef = gql`
   }
   
 `;
-module.exports = typeDef;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
 
 /***/ }),
 

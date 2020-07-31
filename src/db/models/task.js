@@ -1,6 +1,6 @@
-const constants = require('../../constants')
+import constants from '../../constants'
 
-module.exports = (sequelize, type) => {
+export default (sequelize, type) => {
   const task = sequelize.define('Task', {
     id: {
       type: type.UUID,

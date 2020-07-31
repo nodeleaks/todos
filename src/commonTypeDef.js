@@ -12,4 +12,4 @@ scalar DateTime
   }
 `
 
-module.exports = commonTypeDef
+export default commonTypeDef

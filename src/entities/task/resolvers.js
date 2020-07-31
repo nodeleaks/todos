@@ -1,4 +1,4 @@
-const resolvers = {
+export const resolvers = {
   Query: {
     tasks: async (parent, args, context) => {
       const tasks = await context.db.Task.findAll({
@@ -40,5 +40,3 @@ const resolvers = {
     }
   }
 }
-
-module.exports = resolvers

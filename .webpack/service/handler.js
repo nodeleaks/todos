@@ -249,10 +249,16 @@ class DB {
         dialectOptions: {
           useUTC: false // for reading from database
 
-        }
+        },
+        // Use a different storage type. Default: sequelize
+        migrationStorage: 'json',
+        // Use a different file name. Default: sequelize-meta.json
+        migrationStoragePath: 'sequelizeMeta.json',
+        // Use a different table name. Default: SequelizeMeta
+        migrationStorageTableName: 'sequelize_meta'
       });
       models.forEach(modelName => {
-        const model = __webpack_require__("./src/db/config sync recursive")(path.resolve('src/db/models', `${modelName}.js`))(this.sequelize, Sequelize.DataTypes);
+        const model = __webpack_require__("./src/db/config sync recursive")(path.resolve(__dirname, `${modelName}.js`))(this.sequelize, Sequelize.DataTypes);
 
         modelName = _.upperFirst(modelName);
         this[modelName] = model;

@@ -9,8 +9,8 @@ provider:
   versionFunctions: false # optional, default is true
 
 functions:
-  api:
-    handler: handler.api
+  apiES7:
+    handler: handler.apiES7
     events:
       - http:
           path: graphql

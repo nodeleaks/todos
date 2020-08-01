@@ -1,4 +1,4 @@
-import constants from '../../constants'
+import {constants} from '../../constants'
 
 export default (sequelize, type) => {
   const task = sequelize.define('Task', {

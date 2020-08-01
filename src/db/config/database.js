@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize')
-const _ = require('lodash')
-const path = require('path')
+import {Sequelize} from 'sequelize'
+import _ from 'lodash'
+import path from 'path'
 
 const models = [
   'task'

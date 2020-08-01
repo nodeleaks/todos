@@ -90,12 +90,12 @@
 /*!********************!*\
   !*** ./handler.js ***!
   \********************/
-/*! exports provided: api */
+/*! exports provided: apiES7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "api", function() { return api; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "apiES7", function() { return apiES7; });
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! apollo-server-lambda */ "apollo-server-lambda");
@@ -146,7 +146,7 @@ const server = new apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__["ApolloServ
     };
   }
 });
-const api = (event, context, callback) => {
+const apiES7 = (event, context, callback) => {
   const handler = server.createHandler({
     cors: {
       origin: '*'
@@ -219,13 +219,15 @@ webpackEmptyContext.id = "./src/db/config sync recursive";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var sequelize__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sequelize */ "sequelize");
+/* harmony import */ var sequelize__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sequelize__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! path */ "path");
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_3__);
 
 
-const Sequelize = __webpack_require__(/*! sequelize */ "sequelize");
 
-const _ = __webpack_require__(/*! lodash */ "lodash");
-
-const path = __webpack_require__(/*! path */ "path");
 
 const models = ['task'];
 
@@ -258,9 +260,9 @@ class DB {
         migrationStorageTableName: 'sequelize_meta'
       });
       models.forEach(modelName => {
-        const model = __webpack_require__("./src/db/config sync recursive")(path.resolve(__dirname, `${modelName}.js`))(this.sequelize, Sequelize.DataTypes);
+        const model = __webpack_require__("./src/db/config sync recursive")(path__WEBPACK_IMPORTED_MODULE_3___default.a.resolve(__dirname, `${modelName}.js`))(this.sequelize, sequelize__WEBPACK_IMPORTED_MODULE_1__["Sequelize"].DataTypes);
 
-        modelName = _.upperFirst(modelName);
+        modelName = lodash__WEBPACK_IMPORTED_MODULE_2___default.a.upperFirst(modelName);
         this[modelName] = model;
       }); // this.sequelize.sync({force: false});
     } catch (e) {
@@ -279,7 +281,7 @@ class DB {
 
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (new DB(Sequelize));
+/* harmony default export */ __webpack_exports__["default"] = (new DB(sequelize__WEBPACK_IMPORTED_MODULE_1__["Sequelize"]));
 
 /***/ }),
 

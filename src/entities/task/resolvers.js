@@ -1,7 +1,9 @@
 export const resolvers = {
   Query: {
     tasks: async (parent, args, context) => {
-      const tasks = await context.db.Task.findAll({
+
+      console.log(await context.models);
+      const tasks = await context.models.Task.findAll({
         order: [['createdAt', 'desc']],
         limit: args.limit,
         offset: args.offset

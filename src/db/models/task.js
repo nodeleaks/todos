@@ -1,32 +1,34 @@
-import {constants} from '../../constants'
+import constants from '../../constants'
 
-export default (sequelize, type) => {
-  const task = sequelize.define('Task', {
+const task = (sequelize, DataTypes) => {
+  const Task = sequelize.define('Task', {
     id: {
-      type: type.UUID,
-      defaultValue: type.UUIDV4,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false
     },
     summary: {
-      type: type.STRING(500),
+      type: DataTypes.STRING(500),
       allowNull: false
     },
     description: {
-      type: type.STRING(500),
+      type: DataTypes.STRING(500),
       allowNull: true
     },
     status: {
-      type: type.ENUM([
+      type: DataTypes.ENUM([
         constants.TASK.STATUS.TODO,
         constants.TASK.STATUS.DONE
       ]),
       allowNull: false,
       defaultValue: constants.TASK.STATUS.TODO
     },
-    createdAt: type.DATE,
-    updatedAt: type.DATE
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   })
 
-  return task
+  return Task
 }
+
+export { task }

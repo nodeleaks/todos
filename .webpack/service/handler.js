@@ -136,13 +136,13 @@ const server = new apollo_server_lambda__WEBPACK_IMPORTED_MODULE_1__["ApolloServ
     event,
     context
   }) => {
-    _src_db_config_database__WEBPACK_IMPORTED_MODULE_2__["default"].init();
     return {
       headers: event.headers,
       functionName: context.functionName,
       event,
       context,
-      db: _src_db_config_database__WEBPACK_IMPORTED_MODULE_2__["default"]
+      sequelize: _src_db_config_database__WEBPACK_IMPORTED_MODULE_2__["sequelize"],
+      models: _src_db_config_database__WEBPACK_IMPORTED_MODULE_2__["default"]
     };
   }
 });
@@ -189,6 +189,29 @@ scalar DateTime
 
 /***/ }),
 
+/***/ "./src/constants.js":
+/*!**************************!*\
+  !*** ./src/constants.js ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  TASK: {
+    STATUS: {
+      TODO: 'Todo',
+      DONE: 'Done'
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./src/db/config sync recursive":
 /*!****************************!*\
   !*** ./src/db/config sync ***!
@@ -212,76 +235,112 @@ webpackEmptyContext.id = "./src/db/config sync recursive";
 /*!***********************************!*\
   !*** ./src/db/config/database.js ***!
   \***********************************/
-/*! exports provided: default */
+/*! exports provided: sequelize, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sequelize", function() { return sequelize; });
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var sequelize__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sequelize */ "sequelize");
 /* harmony import */ var sequelize__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sequelize__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "lodash");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _models_task__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../models/task */ "./src/db/models/task.js");
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! path */ "path");
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! fs */ "fs");
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_4__);
+
+
+ // import _ from 'lodash'
+
+
+ // this.sequelize = new this.Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+//   host: process.env.DB_HOST,
+//   port: process.env.DB_PORT,
+//   logging: false, // Disable the logging. It is consuming the time on lambda function.
+//   dialect: 'postgresql',
+//   dialectOptions: {
+//     useUTC: false // for reading from database
+//   },
+//   // Use a different storage type. Default: sequelize
+//   migrationStorage: 'json',
+//   // Use a different file name. Default: sequelize-meta.json
+//   migrationStoragePath: 'sequelizeMeta.json',
+//   // Use a different table name. Default: SequelizeMeta
+//   migrationStorageTableName: 'sequelize_meta'
+// })
+
+const sequelize = new sequelize__WEBPACK_IMPORTED_MODULE_1___default.a(process.env.DB_NAME, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  logging: false,
+  // Disable the logging. It is consuming the time on lambda function.
+  dialect: 'postgres'
+});
+const models = {
+  Task: __webpack_require__("./src/db/config sync recursive")(path__WEBPACK_IMPORTED_MODULE_3___default.a.join('src/db/models/task.js')(sequelize, sequelize__WEBPACK_IMPORTED_MODULE_1___default.a.DataTypes))
+}; // Object.keys(models).forEach(key => {
+//   if ('associate' in models[key]) {
+//     models[key].associate(models);
+//   }
+// });
+// models.forEach((modelName) => {
+// const model = require(path.resolve(__dirname, `${modelName}.js`))(this.sequelize, Sequelize.DataTypes)
+//   modelName = _.upperFirst(modelName)
+//   this[modelName] = model
+// })
+// this.sequelize.sync({force: false});
+
+
+/* harmony default export */ __webpack_exports__["default"] = (models);
+
+/***/ }),
+
+/***/ "./src/db/models/task.js":
+/*!*******************************!*\
+  !*** ./src/db/models/task.js ***!
+  \*******************************/
+/*! exports provided: task */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "task", function() { return task; });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../constants */ "./src/constants.js");
 
 
 
+const task = (sequelize, DataTypes) => {
+  const Task = sequelize.define('Task', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false
+    },
+    summary: {
+      type: DataTypes.STRING(500),
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    status: {
+      type: DataTypes.ENUM([_constants__WEBPACK_IMPORTED_MODULE_1__["default"].TASK.STATUS.TODO, _constants__WEBPACK_IMPORTED_MODULE_1__["default"].TASK.STATUS.DONE]),
+      allowNull: false,
+      defaultValue: _constants__WEBPACK_IMPORTED_MODULE_1__["default"].TASK.STATUS.TODO
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
+  });
+  return Task;
+};
 
-const models = ['task'];
 
-class DB {
-  constructor(SequelizeClass) {
-    this.Sequelize = SequelizeClass;
-  }
-
-  init() {
-    if (this.sequelize) {
-      return this.sequelize;
-    }
-
-    try {
-      this.sequelize = new this.Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        logging: false,
-        // Disable the logging. It is consuming the time on lambda function.
-        dialect: 'postgresql',
-        dialectOptions: {
-          useUTC: false // for reading from database
-
-        },
-        // Use a different storage type. Default: sequelize
-        migrationStorage: 'json',
-        // Use a different file name. Default: sequelize-meta.json
-        migrationStoragePath: 'sequelizeMeta.json',
-        // Use a different table name. Default: SequelizeMeta
-        migrationStorageTableName: 'sequelize_meta'
-      });
-      models.forEach(modelName => {
-        const model = __webpack_require__("./src/db/config sync recursive")(path__WEBPACK_IMPORTED_MODULE_3___default.a.resolve(__dirname, `${modelName}.js`))(this.sequelize, sequelize__WEBPACK_IMPORTED_MODULE_1__["Sequelize"].DataTypes);
-
-        modelName = lodash__WEBPACK_IMPORTED_MODULE_2___default.a.upperFirst(modelName);
-        this[modelName] = model;
-      }); // this.sequelize.sync({force: false});
-    } catch (e) {
-      console.log('db init error');
-      console.log({
-        e
-      });
-    }
-
-    return undefined;
-  }
-
-  close() {
-    return this.sequelize.close();
-  }
-
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (new DB(sequelize__WEBPACK_IMPORTED_MODULE_1__["Sequelize"]));
 
 /***/ }),
 
@@ -324,7 +383,8 @@ __webpack_require__.r(__webpack_exports__);
 const resolvers = {
   Query: {
     tasks: async (parent, args, context) => {
-      const tasks = await context.db.Task.findAll({
+      console.log(await context.models);
+      const tasks = await context.models.Task.findAll({
         order: [['createdAt', 'desc']],
         limit: args.limit,
         offset: args.offset
@@ -441,14 +501,14 @@ module.exports = require("dotenv");
 
 /***/ }),
 
-/***/ "lodash":
-/*!*************************!*\
-  !*** external "lodash" ***!
-  \*************************/
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash");
+module.exports = require("fs");
 
 /***/ }),
 

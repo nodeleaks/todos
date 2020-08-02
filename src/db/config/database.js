@@ -1,57 +1,57 @@
-import {Sequelize} from 'sequelize'
-import _ from 'lodash'
+import Sequelize from 'sequelize'
+import task from '../models/task'
+// import _ from 'lodash'
 import path from 'path'
+import fs from 'fs'
 
-const models = [
-  'task'
-]
+      // this.sequelize = new this.Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+      //   host: process.env.DB_HOST,
+      //   port: process.env.DB_PORT,
+      //   logging: false, // Disable the logging. It is consuming the time on lambda function.
+      //   dialect: 'postgresql',
+      //   dialectOptions: {
+      //     useUTC: false // for reading from database
+      //   },
+      //   // Use a different storage type. Default: sequelize
+      //   migrationStorage: 'json',
 
-class DB {
-  constructor (SequelizeClass) {
-    this.Sequelize = SequelizeClass
-  }
+      //   // Use a different file name. Default: sequelize-meta.json
+      //   migrationStoragePath: 'sequelizeMeta.json',
 
-  init () {
-    if (this.sequelize) {
-      return this.sequelize
-    }
+      //   // Use a different table name. Default: SequelizeMeta
+      //   migrationStorageTableName: 'sequelize_meta'
+      // })
 
-    try {
-      this.sequelize = new this.Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        logging: false, // Disable the logging. It is consuming the time on lambda function.
-        dialect: 'postgresql',
-        dialectOptions: {
-          useUTC: false // for reading from database
-        },
-        // Use a different storage type. Default: sequelize
-        migrationStorage: 'json',
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DATABASE_USER,
+  process.env.DATABASE_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    logging: false, // Disable the logging. It is consuming the time on lambda function.
+    dialect: 'postgres',
+  },
+);
 
-        // Use a different file name. Default: sequelize-meta.json
-        migrationStoragePath: 'sequelizeMeta.json',
-
-        // Use a different table name. Default: SequelizeMeta
-        migrationStorageTableName: 'sequelize_meta'
-      })
-
-      models.forEach((modelName) => {
-        const model = require(path.resolve(__dirname, `${modelName}.js`))(this.sequelize, Sequelize.DataTypes)
-
-        modelName = _.upperFirst(modelName)
-        this[modelName] = model
-      })
-      // this.sequelize.sync({force: false});
-    } catch (e) {
-      console.log('db init error')
-      console.log({ e })
-    }
-
-    return undefined
-  }
-
-  close () {
-    return this.sequelize.close()
-  }
+const models = {
+  Task: require(path.join('src/db/models/task.js')(sequelize, Sequelize.DataTypes))
 }
-export default new DB(Sequelize)
+
+// Object.keys(models).forEach(key => {
+//   if ('associate' in models[key]) {
+//     models[key].associate(models);
+//   }
+// });
+
+      // models.forEach((modelName) => {
+        // const model = require(path.resolve(__dirname, `${modelName}.js`))(this.sequelize, Sequelize.DataTypes)
+
+      //   modelName = _.upperFirst(modelName)
+      //   this[modelName] = model
+      // })
+      // this.sequelize.sync({force: false});
+
+
+export {sequelize}
+export default models

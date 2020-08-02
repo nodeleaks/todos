@@ -17,18 +17,7 @@ const schema = makeExecutableSchema({
 
 const server = new ApolloServer({
   schema,
-  formatError: (err) => {
-    let newError = null
-
-    if (err.extensions.code === 'INTERNAL_SERVER_ERROR') {
-      newError = {
-        key: err.path,
-        message: err.message
-      }
-    }
-
-    return newError || err
-  },
+  formatError: (err) => err,
   context: async ({ event, context }) => {
     db.init()
 

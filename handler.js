@@ -1,10 +1,21 @@
 require('dotenv').config()
-const { ApolloServer, makeExecutableSchema } = require('apollo-server-lambda')
-const db = require('./src/db/config/database')
-const commonTypeDef = require('./src/commonTypeDef')
-const task = require('./src/entities/task')
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-lambda'
+import db from './db'
+import commonTypeDef from './src/commonTypeDef'
+import * as task from './src/entities/task'
 
-const schema = makeExecutableSchema({
+// const schema = makeExecutableSchema({
+//   typeDefs: [
+//     commonTypeDef,
+//     task.typeDef
+//   ],
+//   resolvers: [
+//     task.resolvers
+//   ],
+//   resolverValidationOptions: { requireResolversForResolveType: false }
+// })
+
+const server = new ApolloServer({
   typeDefs: [
     commonTypeDef,
     task.typeDef
@@ -12,14 +23,8 @@ const schema = makeExecutableSchema({
   resolvers: [
     task.resolvers
   ],
-  resolverValidationOptions: { requireResolversForResolveType: false }
-})
-
-const server = new ApolloServer({
-  schema,
   formatError: (err) => err,
   context: async ({ event, context }) => {
-    db.init()
 
     return {
       headers: event.headers,
@@ -32,7 +37,7 @@ const server = new ApolloServer({
 
 })
 
-module.exports.api = (event, context, callback) => {
+export const api = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   const handler = server.createHandler({

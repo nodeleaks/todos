@@ -1,11 +1,12 @@
-const resolvers = {
+export const resolvers = {
   Query: {
     tasks: async (parent, args, context) => {
-      const tasks = await context.db.Task.findAll({
-        order: [['createdAt', 'desc']],
-        limit: args.limit,
-        offset: args.offset
-      })
+      console.log(await context.db)
+      // const tasks = await context.db.Task.findAll({
+      //   order: [['createdAt', 'desc']],
+      //   limit: args.limit,
+      //   offset: args.offset
+      // })
 
       return tasks
     }
@@ -40,5 +41,3 @@ const resolvers = {
     }
   }
 }
-
-module.exports = resolvers

@@ -21,9 +21,7 @@
     "aws-sdk": "^2.723.0",
     "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
-    "lodash": "^4.17.19",
-    "pg": "^8.3.0",
-    "sequelize": "^6.3.3",
+    "mongoose": "^5.9.27",
     "serverless-offline": "^6.5.0"
   },
   "devDependencies": {

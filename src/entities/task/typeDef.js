@@ -1,6 +1,6 @@
-const { gql } = require('apollo-server-lambda')
+import { gql } from 'apollo-server-lambda'
 
-const typeDef = gql`
+export const typeDef = gql`
   
   type Task {
     id: ID,
@@ -38,4 +38,3 @@ const typeDef = gql`
   }
   
 `
-module.exports = typeDef

@@ -28,3 +28,9 @@ package:
 plugins:
   - serverless-offline
   - serverless-bundle
+custom:
+  bundle:
+    ignorePackages:
+      - pg-native
+    linting: false
+  

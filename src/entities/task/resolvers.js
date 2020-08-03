@@ -1,13 +1,16 @@
-const resolvers = {
+import {Task} from "../../models/Task";
+
+export const resolvers = {
   Query: {
     tasks: async (parent, args, context) => {
-      const tasks = await context.db.Task.findAll({
-        order: [['createdAt', 'desc']],
-        limit: args.limit,
-        offset: args.offset
-      })
+      console.log(await context);
+      // const tasks = await context.db.connection.manager.find(Task)
+        // order: [['createdAt', 'desc']],
+        // limit: args.limit,
+        // offset: args.offset
+      // })
 
-      return tasks
+      // return tasks
     }
   },
   Mutation: {
@@ -40,5 +43,3 @@ const resolvers = {
     }
   }
 }
-
-module.exports = resolvers

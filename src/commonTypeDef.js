@@ -1,6 +1,6 @@
-const { gql } = require('apollo-server-lambda')
+import { gql } from 'apollo-server-lambda'
 
-const commonTypeDef = gql`
+export const commonTypeDef = gql`
 
 scalar DateTime
 
@@ -11,5 +11,3 @@ scalar DateTime
     _empty: String
   }
 `
-
-module.exports = commonTypeDef

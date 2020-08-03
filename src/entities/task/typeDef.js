@@ -20,7 +20,6 @@ const typeDef = gql`
     createTask (
       summary: String!,
       description: String,
-      status: StatusEnum
     ): Task  
 
     updateTask (

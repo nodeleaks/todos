@@ -1,8 +1,8 @@
 module.exports = {
   TASK: {
     STATUS: {
-      TODO: 'Todo',
-      DONE: 'Done'
+      TODO: 'todo',
+      DONE: 'done'
     }
   }
 }

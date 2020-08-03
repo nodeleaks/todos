@@ -27,3 +27,8 @@ package:
 
 plugins:
   - serverless-offline
+  - serverless-bundle
+
+custom:
+  bundle:
+    linting: false

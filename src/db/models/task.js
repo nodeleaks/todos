@@ -1,6 +1,6 @@
 import constants from '../../constants'
 
-const task = (sequelize, DataTypes) => {
+export const task = (sequelize, DataTypes) => {
   const Task = sequelize.define('Task', {
     id: {
       type: DataTypes.UUID,
@@ -30,5 +30,3 @@ const task = (sequelize, DataTypes) => {
 
   return Task
 }
-
-export { task }

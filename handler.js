@@ -1,5 +1,5 @@
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-lambda'
-import models, { sequelize } from './src/db/config/database'
+import db from './src/db/models'
 
 import commonTypeDef from './src/commonTypeDef'
 import * as task from './src/entities/task'
@@ -31,14 +31,13 @@ const server = new ApolloServer({
     return newError || err
   },
   context: async ({ event, context }) => {
-
+    db.init()
     return {
       headers: event.headers,
       functionName: context.functionName,
       event,
       context,
-      sequelize,
-      models
+      db
     }
   }
 

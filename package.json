@@ -4,7 +4,8 @@
   "description": "Todo App",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sls": "node ./node_modules/serverless/bin/serverless.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,10 @@
     "graphql": "^15.3.0",
     "lodash": "^4.17.19",
     "pg": "^8.3.0",
-    "sequelize": "^6.3.3",
+    "sequelize": "^6.3.3"
+  },
+  "devDependencies": {
+    "serverless": "^1.78.1",
     "serverless-offline": "^6.5.0"
   }
 }
